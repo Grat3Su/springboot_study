@@ -12,10 +12,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.hamcrest.CoreMatchers;
 
 import java.awt.*;
 import java.util.List;
@@ -59,7 +60,7 @@ class BlogApiControllerTest {
 
         //when - 블로그 글 추가 API에 요청을 보낸다. 이 때 요청 타입은 JSON 이며 given 절에서 미리 만들어둔 객체를 요청 본문으로 함께 보낸다.
         //설정한 내용을 바탕으로 요청 전송
-        ResultActions result = mockMvc.perform(post(url).contentType(MediaType.valueOf(MediaType.APPLICATION_JSON_VALUE)).content(requestBody));
+        ResultActions result = mockMvc.perform((RequestBuilder) post(url).contentType(MediaType.APPLICATION_JSON_VALUE)).content(requestBody);
 
         //then - 응답 코드가 201 created인지 확인한다. 블로그를 전체 조회해 크기가 1인지 확인하고 실제로 저장된 데이터와 요청값을 비교한다.
         result.andExpect(status().isCreated());
@@ -67,7 +68,7 @@ class BlogApiControllerTest {
 
         assertThat(articles.size()).isEqualTo(1); // 크기가 1이지 검증
         assertThat(articles.get(0).getTitle()).isEqualTo(title);
-        assertThat(articles.get(0).getTitle()).isEqualTo(content)
+        assertThat(articles.get(0).getTitle()).isEqualTo(content);
 
 
 
